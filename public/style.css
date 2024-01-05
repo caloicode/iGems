@@ -1,0 +1,25 @@
+table {
+  border-collapse: collapse;
+  width: 100vw;
+  overflow-x: scroll;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.hidden, .hiddenCell {
+    display: none;
+}
+
+#addForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#addBtn {
+  margin-top: 1rem;
+}

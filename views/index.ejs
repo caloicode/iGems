@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="framework.css" /> -->
+    <link rel="stylesheet" href="style.css" />
+    <title>iGems</title>
+  </head>
+
+  <body>
+    <h1>iGems</h1>
+
+    <button id="addIgemBtn" onclick="toggleCell()">Add iGems</button>
+
+    <form action="/addIgems" method="post" id="addIgems">
+      <table>
+        <tr>
+          <th>Category</th>
+          <th>Task</th>
+          <th>Status</th>
+          <th>Earned</th>
+          <th class="hiddenCell">Add</th>
+        </tr>
+        <% dataSamp.map(data => { %>
+        <tr>
+          <td><%= data.category %></td>
+          <td><%= data.task %></td>
+          <td><%= data.status %></td>
+          <td><%= data.earned %></td>
+          <td class="hiddenCell">
+            <button type="button" data-key=<%=data.id%>  id=<%=`sub-${data.id}`%> onclick="decrement(dataset.key)">-</button>
+            <input name='igems' id=<%=`input-${data.id}`%> type="number" class="numberInput" step="0.5" />
+            <button type="button" data-key=<%=data.id%> id=<%=`add-${data.id}`%> onclick="increment(dataset.key)">+</button>
+          </td>
+        </tr>
+        <% }) %>
+      </table>
+      <button type="submit" id="saveIgemsBtn" class="hidden">Save</button>
+    </form>
+
+    <button id="addBtn" onclick="toggleHiddenDiv()">Add Gaim</button>
+
+    <div class="hidden" id="addBox">
+      <form action="/addGaim" method="post" id="addForm">
+        <input name="category" type="text" placeholder="Category" />
+        <input name="task" type="text" placeholder="Task" />
+        <select name="status" id="statusSelect">
+          <option value="On-Going" selected>On-going</option>
+          <option value="Pending">Pending</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <input name="earned" type="text" placeholder="Earned" />
+
+        <button type="submit">Save</button>
+      </form>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
