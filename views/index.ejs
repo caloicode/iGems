@@ -23,15 +23,15 @@
           <th class="hiddenCell">Add</th>
         </tr>
         <% dataSamp.map(data => { %>
-        <tr>
+        <tr id=<%=dataSamp.indexOf(data)%>>
           <td><%= data.category %></td>
           <td><%= data.task %></td>
           <td><%= data.status %></td>
           <td><%= data.earned %></td>
-          <td class="hiddenCell">
-            <button type="button" data-key=<%=data.id%>  id=<%=`sub-${data.id}`%> onclick="decrement(dataset.key)">-</button>
-            <input name='igems' id=<%=`input-${data.id}`%> type="number" class="numberInput" step="0.5" />
-            <button type="button" data-key=<%=data.id%> id=<%=`add-${data.id}`%> onclick="increment(dataset.key)">+</button>
+          <td class="hiddenCell" data-inputKey=<%=data.id%>>
+            <button type="button" onclick="decrement(parentElement.dataset.inputKey)">-</button>
+            <input name='igems' type="number" class="numberInput" step="0.5" />
+            <button type="button" onclick="increment(parentElement.dataset.inputKey)">+</button>
           </td>
         </tr>
         <% }) %>

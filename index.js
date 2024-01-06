@@ -40,12 +40,13 @@ app.get("/", (req, res) => {
 
 app.post("/addIgems", (req, res) => {
   const igemArray = req.body.igems;
-  let counter = 0;
 
+  let counter = 0;
   igemArray.forEach((igem) => {
     dataSamp[counter].earned += Number(igem);
     counter++;
   });
+  
   res.redirect("/");
 });
 

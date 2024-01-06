@@ -1,12 +1,12 @@
-var targetInput;
+var inputs = document.querySelectorAll(".numberInput");
 
 function increment(key) {
-  targetInput = document.getElementById("input-" + key);
+  var targetInput = inputs[key - 1];
   targetInput.stepUp();
 }
 
 function decrement(key) {
-  targetInput = document.getElementById("input-" + key);
+  var targetInput = inputs[key - 1];
   targetInput.stepDown();
 }
 
