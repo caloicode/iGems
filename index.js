@@ -12,6 +12,7 @@ app.use(express.static("public"));
 var dataSamp = [
   {
     id: 1,
+    timestamp: "",
     category: "Math",
     task: "Trigo",
     status: "Pending",
@@ -19,6 +20,7 @@ var dataSamp = [
   },
   {
     id: 2,
+    timestamp: "",
     category: "Code",
     task: "Postgres",
     status: "Completed",
@@ -26,6 +28,7 @@ var dataSamp = [
   },
   {
     id: 3,
+    timestamp: "",
     category: "Nihongo",
     task: "Unit 28",
     status: "Pending",
@@ -34,7 +37,7 @@ var dataSamp = [
 ];
 
 app.get("/", (req, res) => {
-  console.log(dataSamp.length);
+  // console.log(dataSamp.length);
   res.render("index.ejs", { dataSamp });
 });
 
@@ -57,10 +60,11 @@ app.post("/addGaim", (req, res) => {
   const earned = req.body.earned;
 
   const lastId = dataSamp[dataSamp.length - 1].id;
-  console.log(lastId);
+  // console.log(lastId);
 
   dataSamp.push({
     id: lastId + 1,
+    timestamp: new Date(),
     category: category,
     task: task,
     status: status,

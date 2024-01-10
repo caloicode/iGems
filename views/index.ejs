@@ -9,11 +9,13 @@
   </head>
 
   <body>
+    <div class="container">
     <h1>iGems</h1>
 
     <button id="addIgemBtn" onclick="toggleCell()">Add iGems</button>
 
     <form action="/addIgems" method="post" id="addIgems">
+      <div class="tableBox">
       <table>
         <tr>
           <th>Category</th>
@@ -23,20 +25,26 @@
           <th class="hiddenCell">Add</th>
         </tr>
         <% dataSamp.map(data => { %>
-        <tr id=<%=dataSamp.indexOf(data)%>>
-          <td><%= data.category %></td>
-          <td><%= data.task %></td>
-          <td><%= data.status %></td>
-          <td><%= data.earned %></td>
-          <td class="hiddenCell" data-inputKey=<%=data.id%>>
-            <button type="button" onclick="decrement(parentElement.dataset.inputKey)">-</button>
+        <tr class="row" id=<%=dataSamp.indexOf(data)%>>
+          <td contenteditable="false"><%= data.category %></td>
+          <td contenteditable="false"><%= data.task %></td>
+          <td contenteditable="false"><%= data.status %></td>
+          <td contenteditable="false"><%= data.earned %></td>
+          <td class="hiddenCell" data-key=<%=dataSamp.indexOf(data)%>>
+            <button type="button" onclick="decrement(<%=dataSamp.indexOf(data)%>)">-</button>
             <input name='igems' type="number" class="numberInput" step="0.5" />
-            <button type="button" onclick="increment(parentElement.dataset.inputKey)">+</button>
+            <button type="button" onclick="increment(<%=dataSamp.indexOf(data)%>)">+</button>
           </td>
-        </tr>
+          <td class="optionsBox hidden" id="optionBox_<%= dataSamp.indexOf(data) %>">
+              <button type="button" id="editBtn_<%= dataSamp.indexOf(data) %>" onclick="editRow(<%= dataSamp.indexOf(data) %>)">Edit</button>
+              <button type="button" id="saveBtn_<%= dataSamp.indexOf(data) %>" class="hidden" onclick="saveRow(<%= dataSamp.indexOf(data) %>)">Save</button>
+              <button type="button" id="deleteBtn_<%= dataSamp.indexOf(data) %>" onclick="deleteRow(<%= dataSamp.indexOf(data) %>)">Delete</button>
+          </td>
+          
         <% }) %>
       </table>
-      <button type="submit" id="saveIgemsBtn" class="hidden">Save</button>
+    </div>
+      <button type="submit" id="saveIgemsBtn" class="hidden save">Save</button>
     </form>
 
     <button id="addBtn" onclick="toggleHiddenDiv()">Add Gaim</button>
@@ -52,9 +60,10 @@
         </select>
         <input name="earned" type="text" placeholder="Earned" />
 
-        <button type="submit">Save</button>
+        <button class="save" type="submit">Save</button>
       </form>
     </div>
+  </div>
     <script src="./script.js"></script>
   </body>
 </html>

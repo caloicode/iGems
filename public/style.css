@@ -1,7 +1,54 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  
+}
+
+body {
+  /* height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  border: 1px solid gray;
+  /* width: 100vw; */
+  height: 100vh;
+  /* background-color: aqua;   */
+}
+
+h1 {
+  margin: 2rem auto 1rem auto;
+}
+
+.save {
+  width: 50px;
+}
+
+.numberInput {
+  width: 50px;
+}
+
+.optionsBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  border: none;
+}
+
+.tableBox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
 table {
   border-collapse: collapse;
-  width: 100vw;
-  overflow-x: scroll;
+  /* width: 100vw; */
+overflow-x: scroll;
 }
 
 th,
@@ -22,4 +69,28 @@ td {
 
 #addBtn {
   margin-top: 1rem;
+}
+
+#addForm input, #addForm select {
+  max-width: 300px;
+  margin: 5px 0 5px 0;
+}
+
+
+/* Media Query for Phones */
+@media only screen and (max-width: 600px) {
+}
+
+/* Media Query for Tablets */
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  /* Styles for tablets go here */
+  .container {
+    width: 60vw;
+    /* height: 100vh; */
+  }
+}
+
+/* Media Query for Laptops and Desktops */
+@media only screen and (min-width: 1025px) {
+  /* Styles for laptops and desktops go here */
 }
