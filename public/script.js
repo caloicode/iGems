@@ -62,6 +62,7 @@ rows.forEach((row) => {
   });
 });
 
+var lastEditedRow;
 function editRow(index) {
   const editBtn = document.getElementById(`editBtn_${index}`);
   const saveBtn = document.getElementById(`saveBtn_${index}`);
@@ -69,13 +70,31 @@ function editRow(index) {
   saveBtn.style.display = saveBtn.style.display === "block" ? "none" : "block";
   editBtn.textContent = editBtn.textContent === "Close" ? "Edit" : "Close";
 
+  // if (lastEditedRow) {
+  // }
+
+  const rows = document.querySelectorAll("tr");
+  const content = rows[index + 1];
+  const html = content.innerHTML;
+  console.log(html);
+  
+  // const contentVal = content[0].textContent;
+  // content[0].innerHTML = `<td><input type="text" value="${contentVal}" name="edit_category" id="edit_category">
+  // </td>`;
+  // console.log(content[0]);
+  
+
+
+  // console.log(lastEditedRow);
+  
+  // console.log(lastEditedRow.innerHTML);
+
   // const rows = document.querySelectorAll("tr");
   // const editableRow = rows[index + 1];
   // const category = editableRow.children[0];
   // category.setAttribute('contenteditable', 'true');
   // const task = editableRow.children[1];
   // task.setAttribute('contenteditable', 'true');
-  
 }
 
 function deleteRow(index) {

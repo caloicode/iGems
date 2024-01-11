@@ -26,11 +26,11 @@
         </tr>
         <% dataSamp.map(data => { %>
         <tr class="row" id=<%=dataSamp.indexOf(data)%>>
-          <td contenteditable="false"><%= data.category %></td>
-          <td contenteditable="false"><%= data.task %></td>
-          <td contenteditable="false"><%= data.status %></td>
-          <td contenteditable="false"><%= data.earned %></td>
-          <td class="hiddenCell" data-key=<%=dataSamp.indexOf(data)%>>
+          <td><%= data.category %></td>
+          <td><%= data.task %></td>
+          <td><%= data.status %></td>
+          <td><%= data.earned %></td>
+          <td class="hiddenCell">
             <button type="button" onclick="decrement(<%=dataSamp.indexOf(data)%>)">-</button>
             <input name='igems' type="number" class="numberInput" step="0.5" />
             <button type="button" onclick="increment(<%=dataSamp.indexOf(data)%>)">+</button>
@@ -40,7 +40,7 @@
               <button type="button" id="saveBtn_<%= dataSamp.indexOf(data) %>" class="hidden" onclick="saveRow(<%= dataSamp.indexOf(data) %>)">Save</button>
               <button type="button" id="deleteBtn_<%= dataSamp.indexOf(data) %>" onclick="deleteRow(<%= dataSamp.indexOf(data) %>)">Delete</button>
           </td>
-          
+        </tr>
         <% }) %>
       </table>
     </div>
