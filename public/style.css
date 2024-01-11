@@ -19,6 +19,18 @@ body {
   /* background-color: aqua;   */
 }
 
+.gridBox {
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr;
+}
+
+.dataGrid {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 0.5fr;
+  background-color: aquamarine;
+}
+
+
 h1 {
   margin: 2rem auto 1rem auto;
 }
