@@ -75,6 +75,12 @@ app.post("/addGaim", (req, res) => {
   res.redirect("/");
 });
 
+app.post('/edit', (req, res) => {
+  console.log(req.body);
+  res.redirect('/')
+  
+})
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

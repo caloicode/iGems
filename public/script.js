@@ -10,9 +10,11 @@ function decrement(key) {
   targetInput.stepDown();
 }
 
-function toggleCell() {
-  const cells = document.querySelectorAll(".hiddenCell");
+function toggleAddIgemView() {
+  // const cells = document.querySelectorAll(".hiddenCell");
   //   console.log(cells.length);
+  const addGrid = document.querySelector("#addGrid");
+  addGrid.style.display = addGrid.style.display === "grid" ? "none" : "grid";
 
   const addIgemBtn = document.getElementById("addIgemBtn");
   addIgemBtn.textContent =
@@ -21,11 +23,6 @@ function toggleCell() {
   const saveIgemsBtn = document.getElementById("saveIgemsBtn");
   saveIgemsBtn.style.display =
     saveIgemsBtn.style.display === "block" ? "none" : "block";
-
-  cells.forEach((cell) => {
-    cell.style.display =
-      cell.style.display === "table-cell" ? "none" : "table-cell";
-  });
 }
 
 function toggleHiddenDiv() {
@@ -39,66 +36,75 @@ function toggleHiddenDiv() {
 }
 
 const rows = document.querySelectorAll(".row");
+const optionBoxes = document.querySelectorAll(".optionBox");
+var closeClicked = false;
 var lastClicked;
 
 rows.forEach((row) => {
   row.addEventListener("click", function () {
-    const lastClickedOptionBox = document.getElementById(
-      `optionBox_${lastClicked}`
-    );
-    if (lastClickedOptionBox) {
-      lastClickedOptionBox.classList.add("hidden");
-    }
-    // console.log(row.id);
     const index = row.id;
-    const optionBox = document.getElementById(`optionBox_${index}`);
-    optionBox.classList.toggle("hidden");
 
-    lastClicked = index;
+    if (ecBtnValue === "Edit") {
+      if (lastClicked && lastClicked != index) {
+        optionBoxes[lastClicked].style.visibility = "hidden";
+        const editBtn = document.getElementById(`editBtn_${lastClicked}`);
+        // const saveBtn = document.getElementById(`saveBtn_${lastClicked}`);
 
-    // setTimeout(() => {
-    //   optionBox.classList.add("hidden");
-    // }, 5000);
+        // saveBtn.style.display = "none";
+        editBtn.textContent = "Edit";
+        ecBtnValue = editBtn.textContent;
+        console.log(ecBtnValue);
+      }
+
+      optionBoxes[index].style.visibility = "visible";
+      lastClicked = index;
+
+      // setTimeout(() => {
+      //   optionBox.classList.add("hidden");
+      // }, 5000);
+    }
+
+
   });
 });
 
 var lastEditedRow;
+var originaInnerHTML;
+var lineValues = [];
+var lastIndex;
+var ecBtnValue = 'Edit';
+
 function editRow(index) {
+  lastIndex = index;
+  lineValues = [];
+
+  const rows = document.querySelectorAll(".row");
+  const line = rows[index];
+  const lineChildren = line.children[0].children;
+  console.log(lineChildren);
+
+  for (var i = 0; i < lineChildren.length; i++) {
+    lineValues.push(lineChildren[i].innerHTML);
+  }
+
+  if (ecBtnValue === 'Close') {
+
+  }
+
   const editBtn = document.getElementById(`editBtn_${index}`);
-  const saveBtn = document.getElementById(`saveBtn_${index}`);
-
-  saveBtn.style.display = saveBtn.style.display === "block" ? "none" : "block";
   editBtn.textContent = editBtn.textContent === "Close" ? "Edit" : "Close";
-
-  // if (lastEditedRow) {
-  // }
-
-  const rows = document.querySelectorAll("tr");
-  const content = rows[index + 1];
-  const html = content.innerHTML;
-  console.log(html);
-  
-  // const contentVal = content[0].textContent;
-  // content[0].innerHTML = `<td><input type="text" value="${contentVal}" name="edit_category" id="edit_category">
-  // </td>`;
-  // console.log(content[0]);
-  
+  ecBtnValue = editBtn.textContent;
+  console.log(ecBtnValue);
 
 
-  // console.log(lastEditedRow);
-  
-  // console.log(lastEditedRow.innerHTML);
+  if (lastIndex) {
+    rows[lastIndex].innerHTML = originaInnerHTML;
+  }
 
-  // const rows = document.querySelectorAll("tr");
-  // const editableRow = rows[index + 1];
-  // const category = editableRow.children[0];
-  // category.setAttribute('contenteditable', 'true');
-  // const task = editableRow.children[1];
-  // task.setAttribute('contenteditable', 'true');
+  rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="text" value="${lineValues[0]}" name="edit_category"/><input type="text" value="${lineValues[1]}" name="edit_task"/><input type="text" value="${lineValues[2]}" name="edit_status"/><div class="flex-row"><input type="number" value="${lineValues[3]}" name="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
 }
 
 function deleteRow(index) {
-  // Implement the logic to delete the row here
   console.log(`Deleting row ${index}`);
 }
 
