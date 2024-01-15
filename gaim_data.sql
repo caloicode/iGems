@@ -15,3 +15,14 @@ SET earned =
 		WHEN id = 2 THEN 3
 	ELSE earned
 END;
+
+--change timestamp data type to timestamptz
+ALTER TABLE gaim_data ALTER COLUMN timestamp TYPE timestamptz
+
+--change timestamp to date
+ALTER TABLE gaim_data 
+	ALTER COLUMN timestamp TYPE date;
+	
+ALTER TABLE gaim_data
+	RENAME COLUMN timestamp TO date;
+
