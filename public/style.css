@@ -20,7 +20,7 @@ body {
 
 .gridBox {
   display: grid;
-  grid-template-columns: 5fr auto auto;
+  grid-template-columns: 5fr 2fr auto;
 }
 
 .flex-row {

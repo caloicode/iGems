@@ -1,5 +1,6 @@
 import { count } from "console";
 import express from "express";
+import pg from 'pg';
 
 // import dataSamp from "../data";
 
@@ -8,6 +9,16 @@ const port = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+
+const db = new pg.Client({
+user: "postgres",
+host: "localhost",
+database: "gaim",
+password: "dbdbdb1234",
+port: 5432
+});
+db.connect();
 
 var dataSamp = [
   {
@@ -36,13 +47,21 @@ var dataSamp = [
   },
 ];
 
-app.get("/", (req, res) => {
-  // console.log(dataSamp.length);
-  res.render("index.ejs", { dataSamp });
+var idValues;
+app.get("/", async (req, res) => {
+  const pg_data = await db.query(`SELECT * FROM gaim_data`);
+  const data = pg_data.rows;
+  idValues = data.map(id => id.id)
+  // console.log(idValues);
+  
+  res.render("index.ejs", { dataSamp: data });
+  // res.render("index.ejs", { dataSamp });
 });
 
-app.post("/addIgems", (req, res) => {
+app.post("/addIgems", async (req, res) => {
   const igemArray = req.body.igems;
+  console.log(igemArray);
+  
 
   let counter = 0;
   igemArray.forEach((igem) => {

@@ -87,21 +87,22 @@ function editRow(index) {
     lineValues.push(lineChildren[i].innerHTML);
   }
 
-  if (ecBtnValue === 'Close') {
-
-  }
-
   const editBtn = document.getElementById(`editBtn_${index}`);
   editBtn.textContent = editBtn.textContent === "Close" ? "Edit" : "Close";
   ecBtnValue = editBtn.textContent;
-  console.log(ecBtnValue);
+  console.log("current ecBtnValue: ", ecBtnValue);
 
+  if(ecBtnValue === "Close"){
+    originaInnerHTML = rows[index].innerHTML;
+    console.log(originaInnerHTML);
 
-  if (lastIndex) {
-    rows[lastIndex].innerHTML = originaInnerHTML;
+    rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="text" value="${lineValues[0]}" name="edit_category"/><input type="text" value="${lineValues[1]}" name="edit_task"/><input type="text" value="${lineValues[2]}" name="edit_status"/><div class="flex-row"><input type="number" value="${lineValues[3]}" name="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
+    ecBtnValue = 'Edit';
+
+  } else {
+    rows[index].innerHTML = originaInnerHTML;
+    console.log(originaInnerHTML);
   }
-
-  rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="text" value="${lineValues[0]}" name="edit_category"/><input type="text" value="${lineValues[1]}" name="edit_task"/><input type="text" value="${lineValues[2]}" name="edit_status"/><div class="flex-row"><input type="number" value="${lineValues[3]}" name="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
 }
 
 function deleteRow(index) {
