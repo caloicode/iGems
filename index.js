@@ -50,30 +50,45 @@ var dataSamp = [{
   },
 ];
 
-var idValues;
+
+
+
 app.get("/", async (req, res) => {
   const pg_data = await db.query(`SELECT * FROM gaim_data`);
   const data = pg_data.rows;
-  idValues = data.map(id => id.id)
-  // console.log(idValues);
-
   res.render("index.ejs", {
     dataSamp: data
   });
-  // res.render("index.ejs", { dataSamp });
 });
 
+
+var idValues;
+
 app.post("/addIgems", async (req, res) => {
+  const pg_data = await db.query(`SELECT * FROM gaim_data`);
+  const data = pg_data.rows;
+
+  idValues = data.map(id => id.id)
+  // console.log("idValues:", idValues);
+
   const igemArray = req.body.igems;
-  console.log(igemArray);
+  // console.log("igemArray:", igemArray);
 
-
-  let counter = 0;
-  igemArray.forEach((igem) => {
-    dataSamp[counter].earned += Number(igem);
-    counter++;
+  var id_igem = [];
+  igemArray.forEach((item, index) => {
+    if (item != "") {
+      id_igem.push([idValues[index], item]);
+    }
   });
 
+  var array = id_igem.map(i => {
+    return `WHEN id = ${i[0]} THEN ${parseInt(i[1])} + earned`
+  }).join(" ");
+
+  // console.log("id_igem:", id_igem);
+  // console.log(array);
+
+  await db.query(`UPDATE gaim_data SET earned = CASE ${array} ELSE earned END;`)
   res.redirect("/");
 });
 
@@ -85,7 +100,7 @@ app.post("/addGaim", (req, res) => {
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, '0');
   const day = String(currentDate.getDate()).padStart(2, '0');
-  
+
   const date = `${year}-${month}-${day}`;
   const category = req.body.category;
   const task = req.body.task;
@@ -98,9 +113,16 @@ app.post("/addGaim", (req, res) => {
 });
 
 app.post('/edit', (req, res) => {
-  console.log(req.body);
+  // console.log("delete id:", req.body.id);
   res.redirect('/')
 
+})
+
+app.post('/delete', async (req, res) => {
+  const deleteID = req.body.id;
+  await db.query(`DELETE FROM gaim_data WHERE id = ${deleteID}`)
+  // console.log("delete id:", req.body.id); 
+  res.redirect('/')
 })
 
 app.listen(port, () => {

@@ -48,23 +48,15 @@ rows.forEach((row) => {
       if (lastClicked && lastClicked != index) {
         optionBoxes[lastClicked].style.visibility = "hidden";
         const editBtn = document.getElementById(`editBtn_${lastClicked}`);
-        // const saveBtn = document.getElementById(`saveBtn_${lastClicked}`);
-
-        // saveBtn.style.display = "none";
         editBtn.textContent = "Edit";
         ecBtnValue = editBtn.textContent;
-        console.log(ecBtnValue);
       }
-
       optionBoxes[index].style.visibility = "visible";
       lastClicked = index;
-
       // setTimeout(() => {
       //   optionBox.classList.add("hidden");
       // }, 5000);
     }
-
-
   });
 });
 
@@ -81,7 +73,6 @@ function editRow(index) {
   const rows = document.querySelectorAll(".row");
   const line = rows[index];
   const lineChildren = line.children[0].children;
-  console.log(lineChildren);
 
   for (var i = 0; i < lineChildren.length; i++) {
     lineValues.push(lineChildren[i].innerHTML);
@@ -90,24 +81,42 @@ function editRow(index) {
   const editBtn = document.getElementById(`editBtn_${index}`);
   editBtn.textContent = editBtn.textContent === "Close" ? "Edit" : "Close";
   ecBtnValue = editBtn.textContent;
-  console.log("current ecBtnValue: ", ecBtnValue);
 
-  if(ecBtnValue === "Close"){
+  if (ecBtnValue === "Close") {
     originaInnerHTML = rows[index].innerHTML;
-    console.log(originaInnerHTML);
 
     rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="text" value="${lineValues[0]}" name="edit_category"/><input type="text" value="${lineValues[1]}" name="edit_task"/><input type="text" value="${lineValues[2]}" name="edit_status"/><div class="flex-row"><input type="number" value="${lineValues[3]}" name="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
-    ecBtnValue = 'Edit';
-
+    ecBtnValue = 'Close';
   } else {
     rows[index].innerHTML = originaInnerHTML;
-    console.log(originaInnerHTML);
   }
 }
 
+const warningBox = document.querySelector('.warningBox');
+
 function deleteRow(index) {
-  console.log(`Deleting row ${index}`);
+  //  console.log(deleteID.getAttribute());
+  const deleteBtn = document.getElementById(`deleteBtn_${index}`);
+  const idVal = deleteBtn.getAttribute('data-deleteID');
+  // console.log(deleteBtn.getAttribute('data-deleteID'));
+  const deleteID = document.querySelector('#deleteID');
+  deleteID.setAttribute('value', idVal);
+
+
+  // const confirmBtn = document.querySelector('#yes');
+  // confirmBtn.setAttribute('name', index);
+
+  warningBox.style.display = 'flex';
+  // confirmBtn.setAttribute()
+  // console.log(`Deleting row ${index}`);
 }
+
+// function exitDelete() {
+const exitBtn = document.getElementById('no');
+exitBtn.addEventListener('click', function () {
+  warningBox.style.display = 'none';
+})
+// }
 
 function saveRow(index) {
   console.log(`Saving row ${index}`);

@@ -18,6 +18,27 @@ body {
   /* background-color: aqua;   */
 }
 
+.warningBox {
+  /* display: flex; */
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  padding: 1rem;
+  width: 50vw;
+  background-color: pink;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.confirmBtnGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .gridBox {
   display: grid;
   grid-template-columns: 5fr 2fr auto;
