@@ -30,6 +30,7 @@
     <div class="gridBox">
       <div class="dataGrid">
         <div class="line">
+          <h3>ID</h3>
           <h3>Category</h3>
           <h3>Task</h3>
           <h3>Status</h3>
@@ -38,6 +39,7 @@
         <% dataSamp.map(data => { %>
         <div class="row" id="<%=dataSamp.indexOf(data)%>">
           <div class="line">
+            <p><%= data.id %></p>
             <p><%= data.category %></p>
             <p><%= data.task %></p>
             <p><%= data.status %></p>
@@ -85,7 +87,7 @@
           <option value="Pending">Pending</option>
           <option value="Completed">Completed</option>
         </select>
-        <input name="earned" type="text" placeholder="Earned" />
+        <input name="earned" type="text" placeholder="Earned" value="0" />
 
         <button class="save" type="submit">Save</button>
       </form>

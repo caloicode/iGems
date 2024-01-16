@@ -113,9 +113,11 @@ app.post("/addGaim", (req, res) => {
 });
 
 app.post('/edit', (req, res) => {
-  // console.log("delete id:", req.body.id);
-  res.redirect('/')
+  const updates = req.body.edit;
+  db.query(`UPDATE gaim_data SET category = '${updates[1]}', task = '${updates[2]}', status = '${updates[3]}', earned = ${parseInt(updates[4])} WHERE id = ${updates[0]}`);  
+  // console.log(req.body.edit);
 
+  res.redirect('/')
 })
 
 app.post('/delete', async (req, res) => {

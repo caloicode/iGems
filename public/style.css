@@ -42,6 +42,7 @@ body {
 .gridBox {
   display: grid;
   grid-template-columns: 5fr 2fr auto;
+  /* overflow-x: scroll; */
 }
 
 .flex-row {
@@ -68,7 +69,11 @@ body {
 
 .line {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr;
+}
+
+.line input {
+  /* width: auto; */
 }
 
 
