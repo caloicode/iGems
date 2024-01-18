@@ -85,7 +85,7 @@ function editRow(index) {
   if (ecBtnValue === "Close") {
     originaInnerHTML = rows[index].innerHTML;
 
-    rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="num" name="edit" readonly value="${lineValues[0]}"><input type="text" value="${lineValues[1]}" name="edit"/><input type="text" value="${lineValues[2]}" name="edit"/><input type="text" value="${lineValues[3]}" name="edit"/><div class="flex-row"><input type="number" step="0.5" value="${lineValues[4]}" name="edit"/><button type="submit" class="saveBtn">Save</button></div></form>`;
+    rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="num" name="edit" readonly value="${lineValues[0]}" class="edit_id"><input type="text" value="${lineValues[1]}" name="edit" class="edit_category"/><input type="text" value="${lineValues[2]}" name="edit" class="edit_task"/><input type="text" value="${lineValues[3]}" name="edit" class="edit_status"/><div class="flex-row"><input type="number" step="0.5" value="${lineValues[4]}" name="edit" class="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
     ecBtnValue = 'Close';
   } else {
     rows[index].innerHTML = originaInnerHTML;

@@ -52,9 +52,9 @@ body {
 
 #addGrid {
   /* display: grid; */
-  background-color: bisque;
+  /* background-color: bisque; */
   display: none;
-  grid-template-columns: 1fr;
+  /* grid-template-columns: 1fr; */
 }
 
 #addGrid button {
@@ -64,22 +64,43 @@ body {
 .dataGrid {
   display: grid;
   grid-template-columns: 1fr;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
 }
 
 .line {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 0.5fr 3fr 3fr 2fr 1fr;
 }
 
 .line input {
   /* width: auto; */
+  /* display: block; */
+}
+
+.edit_id {
+  width: 50px;
+}
+
+.edit_category {
+  width: 100px;
+}
+
+.edit_task {
+  width: 150px;
+}
+
+.edit_earned {
+  width: 60px;
 }
 
 
 
 h1 {
   margin: 2rem auto 1rem auto;
+}
+
+.earnings {
+  margin-bottom: 1rem;
 }
 
 .save {
@@ -92,8 +113,8 @@ h1 {
 
 .optionGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  background-color: yellowgreen;
+  /* grid-template-columns: 1fr; */
+  /* background-color: yellowgreen; */
 }
 
 .optionBox {
@@ -162,13 +183,16 @@ td {
 
 /* Media Query for Phones */
 @media only screen and (max-width: 600px) {
+  * {
+    font-size: 90%;
+  }
 }
 
 /* Media Query for Tablets */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
   /* Styles for tablets go here */
   .container {
-    width: 70vw;
+    /* width: 100vw; */
   }
 }
 

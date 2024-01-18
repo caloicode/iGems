@@ -1,10 +1,5 @@
-import {
-  count
-} from "console";
 import express from "express";
 import pg from 'pg';
-
-// import dataSamp from "../data";
 
 const app = express();
 const port = 3000;
@@ -16,13 +11,15 @@ app.use(express.static("public"));
 
 
 const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "gaim",
-  password: "dbdbdb1234",
-  port: 5432
+  user: process.env.PG_user || "postgres",
+  host: process.env.PG_host || "localhost",
+  database: process.env.PG_database || "gaim",
+  password: process.env.PG_password || "dbdbdb1234",
+  port: process.env.PG_port || 5432
 });
 db.connect();
+
+
 
 var dataSamp = [{
     id: 1,
@@ -54,10 +51,15 @@ var dataSamp = [{
 
 
 app.get("/", async (req, res) => {
-  const pg_data = await db.query(`SELECT * FROM gaim_data`);
+  //must be the same as /addIgem
+  const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
   const data = pg_data.rows;
+  const pg_sum = await db.query(`SELECT SUM(earned) FROM gaim_data`);
+  const sum = pg_sum.rows[0].sum;
+  console.log(sum);
+  
   res.render("index.ejs", {
-    dataSamp: data
+    dataSamp: data, sum
   });
 });
 
@@ -65,7 +67,7 @@ app.get("/", async (req, res) => {
 var idValues;
 
 app.post("/addIgems", async (req, res) => {
-  const pg_data = await db.query(`SELECT * FROM gaim_data`);
+  const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
   const data = pg_data.rows;
 
   idValues = data.map(id => id.id)
@@ -75,15 +77,20 @@ app.post("/addIgems", async (req, res) => {
   // console.log("igemArray:", igemArray);
 
   var id_igem = [];
-  igemArray.forEach((item, index) => {
-    if (item != "") {
-      id_igem.push([idValues[index], item]);
-    }
-  });
+  // igemArray.forEach((item, index) => {
+  //   if (item != "") {
+  //     id_igem.push([idValues[index], item]);
+  //   }
+  // });
 
+  console.log(id_igem);
+  
   var array = id_igem.map(i => {
-    return `WHEN id = ${i[0]} THEN ${parseInt(i[1])} + earned`
+    return `WHEN id = ${i[0]} THEN ${Number(i[1])} + earned`
   }).join(" ");
+
+  console.log(array);
+  
 
   // console.log("id_igem:", id_igem);
   // console.log(array);
@@ -112,9 +119,9 @@ app.post("/addGaim", (req, res) => {
   res.redirect("/");
 });
 
-app.post('/edit', (req, res) => {
+app.post('/edit', async (req, res) => {
   const updates = req.body.edit;
-  db.query(`UPDATE gaim_data SET category = '${updates[1]}', task = '${updates[2]}', status = '${updates[3]}', earned = ${parseInt(updates[4])} WHERE id = ${updates[0]}`);  
+  await db.query(`UPDATE gaim_data SET category = '${updates[1]}', task = '${updates[2]}', status = '${updates[3]}', earned = ${Number(updates[4])} WHERE id = ${updates[0]}`);  
   // console.log(req.body.edit);
 
   res.redirect('/')

@@ -1,6 +1,6 @@
 CREATE TABLE gaim_data (
 	id SERIAL PRIMARY KEY,
-	timestamp TIMESTAMP,
+	date DATE,
 	category TEXT,
 	task TEXT,
 	status VARCHAR(10),
