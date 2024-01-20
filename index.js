@@ -20,7 +20,6 @@ const db = new pg.Client({
 db.connect();
 
 
-
 var dataSamp = [{
     id: 1,
     timestamp: "",
@@ -48,24 +47,53 @@ var dataSamp = [{
 ];
 
 
-
-
 app.get("/", async (req, res) => {
   //must be the same as /addIgem
   const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
   const data = pg_data.rows;
+
+  //set as styles
+  const colors = data.map(d => {
+    if(d.status === 'Pending') {
+      return 'yellow'
+    } else if (d.status === 'On-Going') {
+      return 'none'
+    } else {
+      return '#00ff00'
+    }
+  });
+  console.log(colors);
+  
+
   const pg_sum = await db.query(`SELECT SUM(earned) FROM gaim_data`);
   const sum = pg_sum.rows[0].sum;
   console.log(sum);
-  
+
   res.render("index.ejs", {
-    dataSamp: data, sum
+    dataSamp: data,
+    sum, colors
   });
 });
 
 
-var idValues;
+const currentDate = new Date();
+const year = currentDate.getFullYear();
+const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+const day = String(currentDate.getDate()).padStart(2, '0');
 
+const date = `${year}-${month}-${day}`;
+
+// const id_igem_test = [[3, '0'], [1, '0'], [2, '0']];
+
+// const array_add = id_igem_test.map(i => {
+//   return `VALUES(${i[0]}, ${date}, ${Number(i[1])})`
+// }).join(", ");
+
+// console.log(array_add);
+
+
+
+var idValues;
 app.post("/addIgems", async (req, res) => {
   const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
   const data = pg_data.rows;
@@ -77,38 +105,43 @@ app.post("/addIgems", async (req, res) => {
   // console.log("igemArray:", igemArray);
 
   var id_igem = [];
-  // igemArray.forEach((item, index) => {
-  //   if (item != "") {
-  //     id_igem.push([idValues[index], item]);
-  //   }
-  // });
+  //FIX (MUST BE ID-DEPENDENT, NOT ORDER-DEPENDENT)
+  igemArray.forEach((item, index) => {
+    if (item != "") {
+      id_igem.push([idValues[index], item]);
+    }
+  });
 
   console.log(id_igem);
-  
-  var array = id_igem.map(i => {
+
+  var array_set = id_igem.map(i => {
     return `WHEN id = ${i[0]} THEN ${Number(i[1])} + earned`
   }).join(" ");
 
-  console.log(array);
-  
-
-  // console.log("id_igem:", id_igem);
   // console.log(array);
 
-  await db.query(`UPDATE gaim_data SET earned = CASE ${array} ELSE earned END;`)
+  // const id_igem_test = [[1, 0], [2, 0], [3, 0]];
+
+  // const array_add = id_igem_test.map(i => {
+  //   return `VALUES(${i[0]}, ${date}, ${Number(i[1])})`
+  // });
+
+  const array_add = id_igem.map(i => {
+    return `VALUES(${i[0]}, '${date}', ${Number(i[1])})`
+  }).join(", ");
+
+  // console.log(array_add);
+  
+  
+  
+  await db.query(`UPDATE gaim_data SET earned = CASE ${array_set} ELSE earned END;`);
+  await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) ${array_add};`);
+  // await db.query(``)
   res.redirect("/");
 });
 
 
-
 app.post("/addGaim", (req, res) => {
-  const currentDate = new Date();
-
-  const year = currentDate.getFullYear();
-  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-  const day = String(currentDate.getDate()).padStart(2, '0');
-
-  const date = `${year}-${month}-${day}`;
   const category = req.body.category;
   const task = req.body.task;
   const status = req.body.status;
@@ -121,7 +154,7 @@ app.post("/addGaim", (req, res) => {
 
 app.post('/edit', async (req, res) => {
   const updates = req.body.edit;
-  await db.query(`UPDATE gaim_data SET category = '${updates[1]}', task = '${updates[2]}', status = '${updates[3]}', earned = ${Number(updates[4])} WHERE id = ${updates[0]}`);  
+  await db.query(`UPDATE gaim_data SET category = '${updates[1]}', task = '${updates[2]}', status = '${updates[3]}', earned = ${Number(updates[4])} WHERE id = ${updates[0]}`);
   // console.log(req.body.edit);
 
   res.redirect('/')

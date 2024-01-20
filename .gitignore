@@ -1,5 +1,7 @@
 #my Files
-gaim_data-jan1-17.csv
+db_backup/
+# gaim_data-jan1-17.csv
+
 
 # Node.js
 node_modules/

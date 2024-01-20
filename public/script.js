@@ -41,16 +41,21 @@ var closeClicked = false;
 var lastClicked;
 
 rows.forEach((row) => {
+  // row.style.background = 'blue';
+  // console.log(row.children[0]);
+  
   row.addEventListener("click", function () {
     const index = row.id;
 
     if (ecBtnValue === "Edit") {
       if (lastClicked && lastClicked != index) {
         optionBoxes[lastClicked].style.visibility = "hidden";
+        rows[lastClicked].classList.remove('highlight');
         const editBtn = document.getElementById(`editBtn_${lastClicked}`);
         editBtn.textContent = "Edit";
         ecBtnValue = editBtn.textContent;
       }
+      row.classList.add('highlight');
       optionBoxes[index].style.visibility = "visible";
       lastClicked = index;
       // setTimeout(() => {

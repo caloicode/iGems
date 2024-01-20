@@ -7,6 +7,13 @@ CREATE TABLE gaim_data (
 	earned NUMERIC(4,1)
 )
 
+CREATE TABLE add_igem_log (
+	id SERIAL PRIMARY KEY,
+	gaim_data_id INTEGER REFERENCES gaim_data(id),
+	date DATE, 
+	igems_earned NUMERIC (4,1)
+)
+
 -- Testing column update
 UPDATE gaim_data
 SET earned =
