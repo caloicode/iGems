@@ -55,11 +55,11 @@ app.get("/", async (req, res) => {
   //set as styles
   const colors = data.map(d => {
     if(d.status === 'Pending') {
-      return 'yellow'
+      return '#A8DCE7'
     } else if (d.status === 'On-Going') {
       return 'none'
     } else {
-      return '#00ff00'
+      return '#95CA79'
     }
   });
   // console.log(colors);
@@ -91,8 +91,6 @@ app.get("/", async (req, res) => {
 
 // console.log(array_add);
 
-
-
 var idValues;
 app.post("/addIgems", async (req, res) => {
   const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
@@ -114,30 +112,21 @@ app.post("/addIgems", async (req, res) => {
     }
   });
 
-  console.log(id_igem);
+  console.log("id_igem", id_igem);
 
   var array_set = id_igem.map(i => {
     return `WHEN id = ${i[0]} THEN ${Number(i[1])} + earned`
   }).join(" ");
 
-  // console.log(array);
-
-  // const id_igem_test = [[1, 0], [2, 0], [3, 0]];
-
-  // const array_add = id_igem_test.map(i => {
-  //   return `VALUES(${i[0]}, ${date}, ${Number(i[1])})`
-  // });
-
   const array_add = id_igem.map(i => {
-    return `VALUES(${i[0]}, '${add_date}', ${Number(i[1])})`
+    return `(${i[0]}, '${add_date}', ${Number(i[1])})`
   }).join(", ");
 
-  // console.log(array_add);
+  console.log(array_add);
+  // console.log("query: ", `INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) ${array_add};`);
   
-  
-  
+  await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) VALUES${array_add};`);    
   await db.query(`UPDATE gaim_data SET earned = CASE ${array_set} ELSE earned END;`);
-  await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) ${array_add};`);
   // await db.query(``)
   res.redirect("/");
 });
@@ -148,9 +137,9 @@ app.post("/addGaim", (req, res) => {
   const category = req.body.category;
   const task = req.body.task;
   const status = req.body.status;
-  const earned = req.body.earned;
+  // const earned = req.body.earned;
 
-  db.query(`INSERT INTO gaim_data (date, category, task, status, earned) VALUES('${date}', '${category}', '${task}', '${status}', '${earned}');`);
+  db.query(`INSERT INTO gaim_data (date, category, task, status, earned) VALUES('${date}', '${category}', '${task}', '${status}', 0);`);
 
   res.redirect("/");
 });
@@ -159,7 +148,9 @@ app.post('/edit', async (req, res) => {
   const updates = req.body.edit;
   console.log(updates);
   
-  await db.query(`UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${updates[0]}`);
+  console.log("query:", `UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${parseInt(updates[0])}`);
+  
+  await db.query(`UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${parseInt(updates[0])}`);
   // console.log(req.body.edit);
 
   res.redirect('/')
@@ -167,7 +158,8 @@ app.post('/edit', async (req, res) => {
 
 app.post('/delete', async (req, res) => {
   const deleteID = req.body.id;
-  await db.query(`DELETE FROM gaim_data WHERE id = ${deleteID}`)
+  await db.query(`DELETE FROM add_igem_log WHERE gaim_data_id = ${deleteID}`);
+  await db.query(`DELETE FROM gaim_data WHERE id = ${deleteID}`);
   // console.log("delete id:", req.body.id); 
   res.redirect('/')
 })
