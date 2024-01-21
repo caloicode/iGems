@@ -32,6 +32,7 @@
       <div class="dataGrid">
         <div class="line">
           <h3>ID</h3>
+          <h3>Date</h3>
           <h3>Category</h3>
           <h3>Task</h3>
           <h3>Status</h3>
@@ -41,7 +42,7 @@
         <div class="row" id="<%=dataSamp.indexOf(data)%>">
           <div class="line" style="background-color:<%=colors[dataSamp.indexOf(data)]%>;">
             <p><%= data.id %></p>
-            <!-- <p><%# data.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })%></p> -->
+            <p><%= data.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })%></p>
             <p><%= data.category %></p>
             <p><%= data.task %></p>
             <p><%= data.status %></p>
@@ -53,7 +54,8 @@
 
       <div id="addGrid">
         <form action="/addIgems" method="post" id="addIgems">
-          <p>Add</p>
+          <!-- <p>Add</p> -->
+          <input type="date" id="currentDate" name="add_date" value="<%= new Date().toISOString().split('T')[0] %>">
           <% dataSamp.map(data => { %>
           <div class="addGroup">
             <button type="button" onclick="decrement(<%=dataSamp.indexOf(data)%>)">-</button>
@@ -82,6 +84,7 @@
 
     <div class="hidden" id="addBox">
       <form action="/addGaim" method="post" id="addForm">
+        <input type="date" id="currentDate" name="add_gaim_date" value="<%= new Date().toISOString().split('T')[0] %>">
         <input name="category" type="text" placeholder="Category" />
         <input name="task" type="text" placeholder="Task" />
         <select name="status" id="statusSelect">

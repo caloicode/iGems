@@ -62,12 +62,12 @@ app.get("/", async (req, res) => {
       return '#00ff00'
     }
   });
-  console.log(colors);
+  // console.log(colors);
   
 
   const pg_sum = await db.query(`SELECT SUM(earned) FROM gaim_data`);
   const sum = pg_sum.rows[0].sum;
-  console.log(sum);
+  // console.log(sum);
 
   res.render("index.ejs", {
     dataSamp: data,
@@ -76,12 +76,12 @@ app.get("/", async (req, res) => {
 });
 
 
-const currentDate = new Date();
-const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-const day = String(currentDate.getDate()).padStart(2, '0');
+// const currentDate = new Date();
+// const year = currentDate.getFullYear();
+// const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+// const day = String(currentDate.getDate()).padStart(2, '0');
 
-const date = `${year}-${month}-${day}`;
+// const date = `${year}-${month}-${day}`;
 
 // const id_igem_test = [[3, '0'], [1, '0'], [2, '0']];
 
@@ -100,8 +100,10 @@ app.post("/addIgems", async (req, res) => {
 
   idValues = data.map(id => id.id)
   // console.log("idValues:", idValues);
-
+  const add_date = req.body.add_date;
   const igemArray = req.body.igems;
+  console.log(add_date);
+  
   // console.log("igemArray:", igemArray);
 
   var id_igem = [];
@@ -127,7 +129,7 @@ app.post("/addIgems", async (req, res) => {
   // });
 
   const array_add = id_igem.map(i => {
-    return `VALUES(${i[0]}, '${date}', ${Number(i[1])})`
+    return `VALUES(${i[0]}, '${add_date}', ${Number(i[1])})`
   }).join(", ");
 
   // console.log(array_add);
@@ -142,6 +144,7 @@ app.post("/addIgems", async (req, res) => {
 
 
 app.post("/addGaim", (req, res) => {
+  const date = req.body.add_gaim_date;
   const category = req.body.category;
   const task = req.body.task;
   const status = req.body.status;
@@ -154,7 +157,9 @@ app.post("/addGaim", (req, res) => {
 
 app.post('/edit', async (req, res) => {
   const updates = req.body.edit;
-  await db.query(`UPDATE gaim_data SET category = '${updates[1]}', task = '${updates[2]}', status = '${updates[3]}', earned = ${Number(updates[4])} WHERE id = ${updates[0]}`);
+  console.log(updates);
+  
+  await db.query(`UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${updates[0]}`);
   // console.log(req.body.edit);
 
   res.redirect('/')

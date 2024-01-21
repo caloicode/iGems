@@ -89,8 +89,9 @@ function editRow(index) {
 
   if (ecBtnValue === "Close") {
     originaInnerHTML = rows[index].innerHTML;
+    var setDate = new Date(new Date().setDate(new Date(lineValues[1]).getDate())).toISOString().split('T')[0];
 
-    rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="num" name="edit" readonly value="${lineValues[0]}" class="edit_id"><input type="text" value="${lineValues[1]}" name="edit" class="edit_category"/><input type="text" value="${lineValues[2]}" name="edit" class="edit_task"/><input type="text" value="${lineValues[3]}" name="edit" class="edit_status"/><div class="flex-row"><input type="number" step="0.5" value="${lineValues[4]}" name="edit" class="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
+    rows[index].innerHTML = `<form action="/edit" method="post" id="editForm" class="line"><input type="num" name="edit" readonly value="${lineValues[0]}" class="edit_id"><input type="date" id="currentDate" name="edit" value="${setDate}"><input type="text" value="${lineValues[2]}" name="edit" class="edit_category"/><input type="text" value="${lineValues[3]}" name="edit" class="edit_task"/><input type="text" value="${lineValues[4]}" name="edit" class="edit_status"/><div class="flex-row"><input type="number" step="0.5" value="${lineValues[5]}" name="edit" class="edit_earned"/><button type="submit" class="saveBtn">Save</button></div></form>`;
     ecBtnValue = 'Close';
   } else {
     rows[index].innerHTML = originaInnerHTML;

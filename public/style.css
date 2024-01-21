@@ -5,7 +5,7 @@
 }
 
 body {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,6 +61,10 @@ body {
   min-width: 20px;
 }
 
+#addIgems {
+  display: grid;
+}
+
 .dataGrid {
   display: grid;
   grid-template-columns: 1fr;
@@ -75,6 +79,10 @@ body {
 .line input {
   /* width: auto; */
   /* display: block; */
+}
+
+.line p {
+  cursor: pointer
 }
 
 .edit_id {

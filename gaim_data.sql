@@ -14,6 +14,9 @@ CREATE TABLE add_igem_log (
 	igems_earned NUMERIC (4,1)
 )
 
+-- JOIN gaim_data and add_igem_log
+SELECT * FROM gaim_data JOIN add_igem_log ON add_igem_log.gaim_data_id = gaim_data.id;
+
 -- Testing column update
 UPDATE gaim_data
 SET earned =
