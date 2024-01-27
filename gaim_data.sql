@@ -14,6 +14,17 @@ CREATE TABLE add_igem_log (
 	igems_earned NUMERIC (4,1)
 )
 
+CREATE TABLE completed_log(
+	id SERIAL PRIMARY KEY,
+	gaim_data_id INTEGER REFERENCES gaim_data(id),
+	date DATE
+)
+
+-- view completed logs
+SELECT cl.id, cl.date, gd.task, gd.earned FROM completed_log AS cl
+	JOIN gaim_data AS gd
+	ON gd.id = cl.gaim_data_id;
+
 -- DUMP
 pg_dump -h localhost -U postgres -d gaim -t gaim_data -f output_file.sql
 
@@ -44,7 +55,7 @@ ALTER TABLE gaim_data
 ALTER TABLE gaim_data
 	RENAME COLUMN timestamp TO date;
 
---sample update with in
+--EDIT (sample update with IN)
 UPDATE add_igem_log 
 	SET date = '2024-01-04' 
 	WHERE id IN (4,5);
@@ -56,3 +67,6 @@ SELECT date, SUM(igems_earned) AS total_value
 	FROM add_igem_log
 	GROUP BY date
 	ORDER BY date;
+
+-- View hours spent per subject:
+SELECT *, ROUND(earned/4) AS total_hours FROM gaim_data

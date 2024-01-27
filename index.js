@@ -46,24 +46,52 @@ var dataSamp = [{
   },
 ];
 
+import gdhs from "./sql_queries.js";
 
 app.get("/", async (req, res) => {
   //must be the same as /addIgem
-  const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
+  // const pg_data = await db.query(`SELECT * FROM gaim_data ORDER BY id`);
+  const pg_data = await db.query(gdhs);
   const data = pg_data.rows;
+  // console.log(data);
+
 
   //set as styles
   const colors = data.map(d => {
-    if(d.status === 'Pending') {
-      return '#A8DCE7'
-    } else if (d.status === 'On-Going') {
-      return 'none'
+    if (d.status === 'Completed') {
+      return '#8AEED6'
+      // } else if (d.status === 'URGENT') {
+      // return '#e8afa7'
+      // } else if (d.status === 'Pending') {
+      // return '#E2E2E2'
     } else {
-      return '#95CA79'
+      return 'none'
     }
   });
+
+  // const ail_data = await db.query('')
+  // const habitStrengthHTML = 
   // console.log(colors);
-  
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Create an array to store the days
+  const daysArray = [];
+  for (let i = 0; i < 7; i++) {
+    const previousDate = new Date(currentDate);
+    previousDate.setDate(currentDate.getDate() - i);
+    const day = previousDate.getDate();
+    daysArray.push(day);
+  }
+
+  daysArray.reverse();
+
+  // Log the array of days
+  console.log("daysArray:", daysArray);
+
+
+
 
   const pg_sum = await db.query(`SELECT SUM(earned) FROM gaim_data`);
   const sum = pg_sum.rows[0].sum;
@@ -71,17 +99,13 @@ app.get("/", async (req, res) => {
 
   res.render("index.ejs", {
     dataSamp: data,
-    sum, colors
+    sum,
+    colors,
+    daysArray
   });
 });
 
 
-// const currentDate = new Date();
-// const year = currentDate.getFullYear();
-// const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-// const day = String(currentDate.getDate()).padStart(2, '0');
-
-// const date = `${year}-${month}-${day}`;
 
 // const id_igem_test = [[3, '0'], [1, '0'], [2, '0']];
 
@@ -100,8 +124,8 @@ app.post("/addIgems", async (req, res) => {
   // console.log("idValues:", idValues);
   const add_date = req.body.add_date;
   const igemArray = req.body.igems;
-  console.log(add_date);
-  
+  // console.log(add_date);
+
   // console.log("igemArray:", igemArray);
 
   var id_igem = [];
@@ -112,7 +136,7 @@ app.post("/addIgems", async (req, res) => {
     }
   });
 
-  console.log("id_igem", id_igem);
+  // console.log("id_igem", id_igem);
 
   var array_set = id_igem.map(i => {
     return `WHEN id = ${i[0]} THEN ${Number(i[1])} + earned`
@@ -122,10 +146,10 @@ app.post("/addIgems", async (req, res) => {
     return `(${i[0]}, '${add_date}', ${Number(i[1])})`
   }).join(", ");
 
-  console.log(array_add);
+  // console.log(array_add);
   // console.log("query: ", `INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) ${array_add};`);
-  
-  await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) VALUES${array_add};`);    
+
+  await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) VALUES${array_add};`);
   await db.query(`UPDATE gaim_data SET earned = CASE ${array_set} ELSE earned END;`);
   // await db.query(``)
   res.redirect("/");
@@ -146,11 +170,22 @@ app.post("/addGaim", (req, res) => {
 
 app.post('/edit', async (req, res) => {
   const updates = req.body.edit;
-  console.log(updates);
-  
-  console.log("query:", `UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${parseInt(updates[0])}`);
-  
+  // console.log(updates);
+
+  // console.log("query:", `UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${parseInt(updates[0])}`);
+  if (updates[4] === 'Completed') {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const date = `${year}-${month}-${day}`;
+
+    await db.query(`INSERT INTO completed_log (gaim_data_id, date) VALUES(${parseInt(updates[0])}, '${date}')`);
+  }
+
   await db.query(`UPDATE gaim_data SET date = '${updates[1]}', category = '${updates[2]}', task = '${updates[3]}', status = '${updates[4]}', earned = ${Number(updates[5])} WHERE id = ${parseInt(updates[0])}`);
+
   // console.log(req.body.edit);
 
   res.redirect('/')

@@ -1,14 +1,30 @@
+:root {
+  /* --f1: "Nixie One", system-ui; */
+  /* --f2: "Ledger", serif; */
+  /* --bg: #E9E9EE; */
+  /* --bg: #F5F5F5; */
+  --fg: #282D32;
+}
+
 * {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;  
+  box-sizing: border-box;
+}
+
+h1, h2, h3 {
+  /* font-family: var(--f1); */
 }
 
 body {
   /* height: 100vh; */
+  background-color: var(--bg);
+  color: var(--fg);
   display: flex;
   justify-content: center;
   align-items: center;
+  /* font-family: var(--f2); */
+  /* font-size: 90%; */
 }
 
 .container {
@@ -43,7 +59,7 @@ body {
 
 .gridBox {
   display: grid;
-  grid-template-columns: 5fr 2fr auto;
+  grid-template-columns: 6fr 1fr 1fr;
   grid-template-rows: auto;
   /* overflow-x: scroll; */
 }
@@ -82,7 +98,7 @@ body {
 
 .line {
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr 3fr 3fr 2fr 1fr;
+  grid-template-columns: 0.5fr 1.5fr 3fr 3fr 2fr 1fr 3fr;
   /* grid-template-columns: 0.5fr 1fr 4fr 5fr 1fr 1fr; */
 }
 
@@ -96,8 +112,29 @@ body {
   cursor: pointer
 }
 
+.circleGroup {
+  display: flex;
+}
+
+.circle {
+  /* padding: 1rem; */
+  width: 25px;
+  height: 25px;
+  /* background-color: lightgrey; */
+  border: 1px solid black;
+  font-size: smaller;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shaded {
+  background-color: greenyellow;
+}
+
 .task {
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .edit_id {
@@ -169,7 +206,7 @@ h1 {
 table {
   border-collapse: collapse;
   /* width: 100vw; */
-overflow-x: scroll;
+  overflow-x: scroll;
 }
 
 th,
@@ -180,13 +217,16 @@ td {
 }
 
 
-.hidden, .hiddenCell {
-    display: none;
+.hidden,
+.hiddenCell {
+  display: none;
 }
 
 .highlight {
-  /* background-color: yellow; */
-  background-color: #E5D6D2;
+  background-color: palegoldenrod;
+  /* background-color: #E5D6D2; */
+  /* background-color:tomato; */
+  /* color: white; */
 }
 
 .shown {
@@ -200,15 +240,16 @@ td {
 
 
 #addForm {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #addBtn {
   margin-top: 1rem;
 }
 
-#addForm input, #addForm select {
+#addForm input,
+#addForm select {
   max-width: 300px;
   margin: 5px 0 5px 0;
 }
@@ -218,9 +259,13 @@ td {
 @media only screen and (max-width: 600px) {
   .line {
     display: grid;
-    grid-template-columns:auto;
+    grid-template-columns: auto;
     border-bottom: 1px solid rgb(174, 171, 171)
   }
+  .task {
+    font-weight: bold;
+  }
+
   .head {
     /* display: none; */
     /* visibility: hidden; */
@@ -229,6 +274,7 @@ td {
 
 /* Media Query for Tablets */
 @media only screen and (min-width: 601px) and (max-width: 1024px) {
+
   /* Styles for tablets go here */
   .container {
     /* width: 100vw; */
@@ -237,6 +283,7 @@ td {
 
 /* Media Query for Laptops and Desktops */
 @media only screen and (min-width: 1025px) {
+
   /* Styles for laptops and desktops go here */
   .container {
     /* width: 80vw; */
