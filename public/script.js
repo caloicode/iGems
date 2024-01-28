@@ -9,16 +9,25 @@ function decrement(key) {
 }
 
 function toggleAddIgemView() {
-  const addGrid = document.querySelector("#addGrid");
-  addGrid.style.display = addGrid.style.display === "grid" ? "none" : "grid";
-
+  const addGroups = document.querySelectorAll('.addGroup');
+  const addDate = document.querySelector('.add_date');
   const addIgemBtn = document.getElementById("addIgemBtn");
-  addIgemBtn.textContent =
-    addIgemBtn.textContent === "Close" ? "Add iGems" : "Close";
-
   const saveIgemsBtn = document.getElementById("saveIgemsBtn");
-  saveIgemsBtn.style.display =
-    saveIgemsBtn.style.display === "block" ? "none" : "block";
+  const lines = document.querySelectorAll('.line');
+
+  addGroups.forEach(group => {
+    group.style.display = group.style.display === 'flex' ? 'none' : 'flex';
+  })
+
+  addDate.style.display = addDate.style.display === 'block' ? 'none' : 'block'; 
+  addIgemBtn.textContent = addIgemBtn.textContent === "Close" ? "Add iGems" : "Close";
+  saveIgemsBtn.style.display = saveIgemsBtn.style.display === "block" ? "none" : "block";
+
+  // adjust line grid columns
+  lines.forEach(line => {
+    line.style.gridTemplateColumns = line.style.gridTemplateColumns === '0.5fr 1.5fr 3fr 3fr 2fr 1fr 3fr 2fr 2fr' ? '0.5fr 1.5fr 3fr 3fr 2fr 1fr 3fr 2fr' : '0.5fr 1.5fr 3fr 3fr 2fr 1fr 3fr 2fr 2fr';
+  })
+
 }
 
 function toggleHiddenDiv() {
