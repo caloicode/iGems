@@ -15,7 +15,10 @@
 <body>
   <div class="container">
     <!-- EDIT MODE -->
-    <div class="editMode fullViewMode"></div>
+    <div class="editMode fullViewMode">
+      
+    </div>
+
 
     <!-- DELETE MODE-->
     <div class="warningBox fullViewMode">
@@ -34,63 +37,72 @@
     <a href="/dailyEarnings">Daily Earnings Stats</a>
     <button id="addIgemBtn" onclick="toggleAddIgemView()">Add iGems</button>
 
-    <form action="/addIgems" method="post" id="addIgems">
-      <div class="gridBox">
-        <div class="dataGrid">
-          <div class="line head">
-            <h3>ID</h3>
-            <h3>Date</h3>
-            <h3>Category</h3>
-            <h3>Task</h3>
-            <h3>Status</h3>
-            <h3>Earned</h3>
-            <h3>Habit Strength</h3>
-            <input type="date" class="add_date" name="add_date" value="<%= new Date().toISOString().split('T')[0] %>">
-            <p>Options</p>
-          </div>
-          
-          <% dataSamp.map(data => { %>
-          <div class="row" id="<%=dataSamp.indexOf(data)%>">
-            <div class="line" style="background-color:<%=colors[dataSamp.indexOf(data)]%>;">
-              <p><%= data.id %></p>
-              <p><%= data.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })%></p>
-              <p><%= data.category %></p>
-              <p class="task"><%= data.task %></p>
-              <p><%= data.status %></p>
-              <p><%= data.earned %></p>
-              <!-- <p>ooooooo</p> -->
-              <% if(data.status != 'Completed'){ %>
-              <div class="circleGroup">
-                <%# console.log(data.task, data.habit_strength) %>
-                <% daysArray.map(d => { %>
+    <div class="gridBox">
+      <div class="dataGrid">
+        <div class="line head">
+          <h3>ID</h3>
+          <h3>Date</h3>
+          <h3>Category</h3>
+          <h3>Task</h3>
+          <h3>Status</h3>
+          <h3>Earned</h3>
+          <h3>Habit Strength</h3>
+        </div>
+        <% dataSamp.map(data => { %>
+        <div class="row" id="<%=dataSamp.indexOf(data)%>">
+          <div class="line" style="background-color:<%=colors[dataSamp.indexOf(data)]%>;">
+            <p><%= data.id %></p>
+            <p><%= data.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })%></p>
+            <p><%= data.category %></p>
+            <p class="task"><%= data.task %></p>
+            <p><%= data.status %></p>
+            <p><%= data.earned %></p>
+            <!-- <p>ooooooo</p> -->
+            <% if(data.status != 'Completed'){ %>
+            <div class="circleGroup">
+              <%# console.log(data.task, data.habit_strength) %>
+              <% daysArray.map(d => { %>
                 <% if(data.habit_strength[daysArray.indexOf(d)] != 0){ %>
-                <div class="circle shaded"><%=d%></div>
+                  <div class="circle shaded"><%=d%></div>
                 <% } else { %>
-                <div class="circle"><%=d%></div>
+                  <div class="circle"><%=d%></div>
                 <% } %>
-                <% }) %>
-              </div>
-              <% } else { %>
-              <div class="circleGroup"></div>
-              <%}%>
-              <div class="addGroup">
-                <button type="button" onclick="decrement(<%=data.id%>)">-</button>
-              <input name='igems' type="number" class="numberInput" step="0.5" id="input_<%=data.id%>" />
-              <button type="button" onclick="increment(<%=data.id%>)">+</button>
+              <% }) %>
             </div>
-            <div class="optionBox" id="optionBox_<%= dataSamp.indexOf(data) %>">
-              <button type="button" id="editBtn_<%= dataSamp.indexOf(data) %>" onclick="editRow(<%= dataSamp.indexOf(data) %>)">Edit</button>
-              <button type="button" data-deleteID="<%=data.id%>" id="deleteBtn_<%= dataSamp.indexOf(data) %>" onclick="deleteRow(<%= dataSamp.indexOf(data) %>)">Delete</button>
-            </div>
+          <% } %>
           </div>
         </div>
         <% }) %>
       </div>
-      <button type="submit" id="saveIgemsBtn" class="hidden save">Save</button>
+
+      <div id="addGrid">
+        <form action="/addIgems" method="post" id="addIgems">
+          <!-- <p>Add</p> -->
+          <input type="date" class="add_date" name="add_date" value="<%= new Date().toISOString().split('T')[0] %>">
+          <% dataSamp.map(data => { %>
+          <div class="addGroup">
+            <button type="button" onclick="decrement(<%=data.id%>)">-</button>
+            <input name='igems' type="number" class="numberInput" step="0.5" id="input_<%=data.id%>"/>
+            <button type="button" onclick="increment(<%=data.id%>)">+</button>
+          </div>
+          <% }) %>
+      </div>
+
+      <div class="optionGrid">
+        <p>Options</p>
+        <% dataSamp.map(data => { %>
+        <div class="optionBox" id="optionBox_<%= dataSamp.indexOf(data) %>">
+          <button type="button" id="editBtn_<%= dataSamp.indexOf(data) %>" onclick="editRow(<%= dataSamp.indexOf(data) %>)">Edit</button>
+          <button type="button" data-deleteID="<%=data.id%>" id="deleteBtn_<%= dataSamp.indexOf(data) %>" onclick="deleteRow(<%= dataSamp.indexOf(data) %>)">Delete</button>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <button type="submit" id="saveIgemsBtn" class="hidden save">Save</button>
     </form>
 
-
     <button id="addBtn" onclick="toggleHiddenDiv()">Add Gaim</button>
+
     <div class="hidden" id="addBox">
       <form action="/addGaim" method="post" id="addForm">
         <input type="date" id="currentDate" name="add_gaim_date" value="<%= new Date().toISOString().split('T')[0] %>">

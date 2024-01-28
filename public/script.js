@@ -22,15 +22,11 @@ function toggleAddIgemView() {
 }
 
 function toggleHiddenDiv() {
-  // const hiddenDiv = document.getElementById("addBox");
+  const hiddenDiv = document.getElementById("addBox");
   const toggleButton = document.getElementById("addBtn");
-const addGroups = document.querySelectorAll('.addGroup');
-addGroups.forEach(item => {
-  item.style.display = item.style.display === 'block' ? 'none' : 'block';
-})
 
-  // hiddenDiv.style.display =
-  //   hiddenDiv.style.display === "block" ? "none" : "block";
+  hiddenDiv.style.display =
+    hiddenDiv.style.display === "block" ? "none" : "block";
   toggleButton.textContent =
     toggleButton.textContent === "Add Gaim" ? "Close" : "Add Gaim";
 }
