@@ -1,5 +1,7 @@
 import express from "express";
 import pg from 'pg';
+import moment from 'moment';
+// const moment = require('moment');
 
 const app = express();
 const port = 3000;
@@ -88,7 +90,7 @@ app.get("/", async (req, res) => {
   daysArray.reverse();
 
   // Log the array of days
-  console.log("daysArray:", daysArray);
+  // console.log("daysArray:", daysArray);
 
 
 
@@ -197,6 +199,26 @@ app.post('/delete', async (req, res) => {
   await db.query(`DELETE FROM gaim_data WHERE id = ${deleteID}`);
   // console.log("delete id:", req.body.id); 
   res.redirect('/')
+})
+
+app.get('/dailyEarnings', async (req, res) => {
+  const pg_stats = await db.query(`SELECT date, SUM(igems_earned) AS total_value FROM add_igem_log GROUP BY date ORDER BY date;`);
+  const data = pg_stats.rows;
+
+  const dates = data.map(entry => moment(entry.date).format('MM-DD'));
+  const values = data.map(entry => parseFloat(entry.total_value));
+
+  console.log("dates", dates);
+  console.log("values", values);
+  
+  
+
+  // res.redirect('/');
+  // Render the EJS file with data
+  res.render('stats_daily.ejs', { title: 'Daily iGems Earned', dates, values });
+
+  // res.json(stats);
+  // res.render('stats_daily.ejs')
 })
 
 app.listen(port, () => {

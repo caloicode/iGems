@@ -1,0 +1,72 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <!-- Include Chart.js library and Moment.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+</head>
+
+<body>
+  <!-- Canvas element to render the chart -->
+  <!-- <a href="/">Gaim</a> -->
+  <div id="chart-container">
+    <canvas id="lineChart" style="width:100vw;"></canvas>
+  </div>
+  <script>
+    // Extract data from the backend
+    const dates = <%- JSON.stringify(dates) %>;
+    const values = <%- JSON. stringify(values) %>;
+    // console.log('dates', dates);
+    // console.log('values', values);
+    
+
+    // Get the canvas element
+    const ctx = document.getElementById('lineChart').getContext('2d');
+
+    // Create the line chart
+    const lineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: 'Earnings',
+          borderColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color for the fill
+          data: values,
+          fill: 'origin' // Fill from the origin (zero line)
+        }]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Daily iGems Earned', // Your chart title
+            position: 'top',
+            font: {
+              size: 16
+            }
+          },
+          legend: {
+            display: false // Hide default legend if not needed
+          }
+        },
+        scales: {
+          x: {
+            type: 'category'
+          },
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
