@@ -1,4 +1,6 @@
 :root {
+  --fb: "Anaheim", sans-serif;
+  --fh: "Press Start 2P", system-ui;
   /* --f1: "Nixie One", system-ui; */
   /* --f2: "Ledger", serif; */
   /* --bg: #E9E9EE; */
@@ -10,7 +12,10 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  /* font-family: var(--fb); */
+  font-family: var(--fb);
 }
+
 
 h1, h2, h3 {
   /* font-family: var(--f1); */
@@ -87,12 +92,15 @@ body {
   align-items: center;
 }
 
+.addGroup button {
+  width: 20px;
+}
+
 .add_date {
   display: none;
   /* display: block; */
   margin: auto;
 }
-
 
 .dataGrid {
   display: grid;
@@ -102,8 +110,16 @@ body {
 
 .line {
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr 3fr 3fr 2fr 1fr 3fr 2fr;
+  grid-template-columns: 0.5fr 1.5fr 3fr 3fr 1fr 1fr 3fr 2fr;
   /* grid-template-columns: 0.5fr 1fr 4fr 5fr 1fr 1fr; */
+}
+
+.line * {
+  margin: auto 0 auto 0;
+}
+
+.full-margin {
+  margin: auto;
 }
 
 .line input {
@@ -112,7 +128,7 @@ body {
   /* width: fit-content; */
 }
 
-.line p {
+.line * {
   cursor: pointer
 }
 
@@ -125,7 +141,6 @@ body {
   width: 25px;
   height: 25px;
   /* background-color: lightgrey; */
-  border: 1px solid black;
   font-size: smaller;
   border-radius: 50%;
   display: flex;
@@ -133,8 +148,15 @@ body {
   align-items: center;
 }
 
+.unshaded {
+  color: gray;
+  border: 1px solid gray;
+}
+
 .shaded {
   background-color: greenyellow;
+  color: black;
+  border: 1px solid black;
 }
 
 .task {
@@ -160,6 +182,7 @@ body {
 
 
 h1 {
+  font-family: var(--fh);
   margin: 2rem auto 1rem auto;
 }
 

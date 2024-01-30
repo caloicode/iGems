@@ -5,9 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Ledger&family=Nixie+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anaheim&family=Press+Start+2P&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css" />
   <title>iGems</title>
 </head>
@@ -44,19 +46,23 @@
           <h3>Task</h3>
           <h3>Status</h3>
           <h3>Earned</h3>
-          <h3>Habit Strength</h3>
+          <h3>Chunk Strength</h3>
           <input type="date" class="add_date" name="add_date" value="<%= new Date().toISOString().split('T')[0] %>">
           <p>Options</p>
 
         </div>
         <% dataSamp.map(data => { %>
         <div class="row" id="<%=dataSamp.indexOf(data)%>">
-          <div class="line" style="background-color:<%=colors[dataSamp.indexOf(data)]%>;">
+          <% if(data.status === 'Completed'){ %>
+            <div class="line" style="background-color:#8AEED6;">
+          <% } else { %>
+            <div class="line">            
+          <% } %>
             <p><%= data.id %></p>
             <p><%= data.date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })%></p>
             <p><%= data.category %></p>
             <p class="task"><%= data.task %></p>
-            <p><%= data.status %></p>
+            <div style="color:<%=colors[dataSamp.indexOf(data)]%>;"><%= data.status %></div>
             <p><%= data.earned %></p>
 
             <% if(data.status != 'Completed'){ %>
@@ -65,7 +71,7 @@
                 <% if(data.habit_strength[daysArray.indexOf(d)] != 0){ %>
                   <div class="circle shaded"><%=d%></div>
                 <% } else { %>
-                  <div class="circle"><%=d%></div>
+                  <div class="circle unshaded"><%=d%></div>
                 <% } %>
               <% }) %>
             </div>

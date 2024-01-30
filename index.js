@@ -60,12 +60,12 @@ app.get("/", async (req, res) => {
 
   //set as styles
   const colors = data.map(d => {
-    if (d.status === 'Completed') {
-      return '#8AEED6'
-      // } else if (d.status === 'URGENT') {
+    if (d.status === 'URGENT') {
       // return '#e8afa7'
-      // } else if (d.status === 'Pending') {
+      return 'red'
+    } else if (d.status === 'Pending') {
       // return '#E2E2E2'
+      return 'gray'
     } else {
       return 'none'
     }
@@ -210,12 +210,16 @@ app.get('/dailyEarnings', async (req, res) => {
 
   console.log("dates", dates);
   console.log("values", values);
-  
-  
+
+
 
   // res.redirect('/');
   // Render the EJS file with data
-  res.render('stats_daily.ejs', { title: 'Daily iGems Earned', dates, values });
+  res.render('stats_daily.ejs', {
+    title: 'Daily iGems Earned',
+    dates,
+    values
+  });
 
   // res.json(stats);
   // res.render('stats_daily.ejs')
