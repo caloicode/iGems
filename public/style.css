@@ -110,7 +110,7 @@ body {
 
 .line {
   display: grid;
-  grid-template-columns: 0.5fr 1.5fr 3fr 3fr 1fr 1fr 3fr 2fr;
+  grid-template-columns: 0.5fr 1.5fr 3fr 3fr 1.5fr 1fr 3fr 1.5fr;
   /* grid-template-columns: 0.5fr 1fr 4fr 5fr 1fr 1fr; */
 }
 
@@ -161,6 +161,15 @@ body {
 
 .task {
   /* font-weight: bold; */
+}
+
+.urgent {
+  background-color:lightpink;
+  /* color: white; */
+}
+
+.pending {
+  background-color: lightgray;
 }
 
 .edit_id {

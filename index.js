@@ -1,6 +1,9 @@
 import express from "express";
 import pg from 'pg';
 import moment from 'moment';
+
+import dotenv from 'dotenv';
+dotenv.config();
 // const moment = require('moment');
 
 const app = express();
@@ -12,13 +15,18 @@ app.use(express.urlencoded({
 app.use(express.static("public"));
 
 
+// const db = new pg.Client({
+//   user: process.env.PG_user || "postgres",
+//   host: process.env.PG_host || "localhost",
+//   database: process.env.PG_database || "gaim",
+//   password: process.env.PG_password || "dbdbdb1234",
+//   port: process.env.PG_port || 5432
+// });
+
 const db = new pg.Client({
-  user: process.env.PG_user || "postgres",
-  host: process.env.PG_host || "localhost",
-  database: process.env.PG_database || "gaim",
-  password: process.env.PG_password || "dbdbdb1234",
-  port: process.env.PG_port || 5432
+  connectionString: process.env.CONNECTION_STRING
 });
+
 db.connect();
 
 
@@ -62,14 +70,16 @@ app.get("/", async (req, res) => {
   const colors = data.map(d => {
     if (d.status === 'URGENT') {
       // return '#e8afa7'
-      return 'red'
+      return 'urgent'
     } else if (d.status === 'Pending') {
       // return '#E2E2E2'
-      return 'gray'
+      return 'pending'
     } else {
       return 'none'
     }
   });
+  // console.log(colors);
+  
 
   // const ail_data = await db.query('')
   // const habitStrengthHTML = 
@@ -208,8 +218,8 @@ app.get('/dailyEarnings', async (req, res) => {
   const dates = data.map(entry => moment(entry.date).format('MM-DD'));
   const values = data.map(entry => parseFloat(entry.total_value));
 
-  console.log("dates", dates);
-  console.log("values", values);
+  // console.log("dates", dates);
+  // console.log("values", values);
 
 
 
