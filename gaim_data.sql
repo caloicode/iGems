@@ -20,6 +20,28 @@ CREATE TABLE completed_log(
 	date DATE
 )
 
+-- ON DB MIGRATION (must handle primary key problem, kay murestart sa 1...)
+-- ALTER SEQUENCE add_igem_log_id_seq RESTART WITH (SELECT MAX(id) FROM add_igem_log) + 1;
+-- Get the maximum ID value
+SELECT MAX(id) FROM add_igem_log;
+
+-- Store the maximum ID value in a variable
+DO $$
+DECLARE max_id bigint;
+BEGIN
+    SELECT MAX(id) INTO max_id FROM add_igem_log;
+    -- Alter the sequence to start from the maximum ID value plus 1
+    EXECUTE format('ALTER SEQUENCE add_igem_log_id_seq RESTART WITH %s', max_id + 1);
+END $$;
+
+
+-- MINIFIED:
+SELECT MAX(id) FROM add_igem_log; DO $$ DECLARE max_id bigint; BEGIN SELECT MAX(id) INTO max_id FROM add_igem_log; EXECUTE format('ALTER SEQUENCE add_igem_log_id_seq RESTART WITH %s', max_id + 1); END $$;
+SELECT MAX(id) FROM gaim_data; DO $$ DECLARE max_id bigint; BEGIN SELECT MAX(id) INTO max_id FROM gaim_data; EXECUTE format('ALTER SEQUENCE gaim_data_id_seq RESTART WITH %s', max_id + 1); END $$;
+SELECT MAX(id) FROM completed_log; DO $$ DECLARE max_id bigint; BEGIN SELECT MAX(id) INTO max_id FROM completed_log; EXECUTE format('ALTER SEQUENCE completed_log_id_seq RESTART WITH %s', max_id + 1); END $$;
+
+
+
 -- view completed logs
 SELECT cl.id, cl.date, gd.task, gd.earned FROM completed_log AS cl
 	JOIN gaim_data AS gd

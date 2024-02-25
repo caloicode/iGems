@@ -79,7 +79,7 @@ app.get("/", async (req, res) => {
     }
   });
   // console.log(colors);
-  
+
 
   // const ail_data = await db.query('')
   // const habitStrengthHTML = 
@@ -160,9 +160,16 @@ app.post("/addIgems", async (req, res) => {
 
   // console.log(array_add);
   // console.log("query: ", `INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) ${array_add};`);
+  var err;
+  try {
+    // err = await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) VALUES${array_add} RETURNING *;`);
+    await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) VALUES${array_add};`);
+    await db.query(`UPDATE gaim_data SET earned = CASE ${array_set} ELSE earned END;`);
+  } catch (error) {
+    console.log(error);
+    // console.log("err:", err);
+  }
 
-  await db.query(`INSERT INTO add_igem_log (gaim_data_id, date, igems_earned) VALUES${array_add};`);
-  await db.query(`UPDATE gaim_data SET earned = CASE ${array_set} ELSE earned END;`);
   // await db.query(``)
   res.redirect("/");
 });
